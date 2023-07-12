@@ -1,15 +1,14 @@
 #include <VBCoreG4_arduino_system.h>
 #include <stm32g4xx_hal_fdcan.h>
-#include <CANtest.h>
 
-//в VBCoreG4_arduino_system.h пин PA5 определен как LED_BUILTIN 
+//для работы с CAN FD подключите дополнительный заголовочный файл stm32g4xx_hal_fdcan.h
+//в VBCoreG4_arduino_system.h пин PA5 определен как LED2 
 
 //запустить can c распберри - sudo ip link set can0 up txqueuelen 65535 type can bitrate 1000000 dbitrate 8000000 fd on
 //отправить сообщение c распберри - cansend can0 00000123#DEADBEEF, ID всегда содержит 8 цифр
 //прочитать все сообщения в can -  candump can0
 //прочитать сообщение can по его ID -  candump can0,ID:7ff
 
-//в libraries скопировать и разархивировать библиотеку STM32duino_FDCAN-master https://github.com/Dmivaka/STM32duino_FDCAN/tree/master
 //в libraries добавить библиотеку VBCoreG4_arduino_system.h
 //функция can_init() запускает can
 //функция get_hfdcan() возвращает переменную типа FDCAN_HandleTypeDef, без которой невозможно взаимодействие с can
@@ -33,7 +32,7 @@ void loop() {
        FDCAN_TxHeaderTypeDef TxHeader = create_header(100); //создаем хидер исходящего сообщения, 100 - ID сообщения, в hex 0х64
        TxHeader.DataLength = FDCAN_DLC_BYTES_4; //количество байт в сообщении - 4
       if (HAL_FDCAN_AddMessageToTxFifoQ(&hfdcan1, &TxHeader, data) != HAL_OK){ Error_Handler(); } 
-      else{digitalWrite(LED_BUILTIN, !digitalRead(LED_BUILTIN));} //помигаем светодиодом, если все ок
+      else{digitalWrite(LED2, !digitalRead(LED2));} //помигаем светодиодом, если все ок
     }
 
 // -------Получение сообщений из can-------
