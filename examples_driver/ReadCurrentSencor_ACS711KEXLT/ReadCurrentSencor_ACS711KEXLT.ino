@@ -14,8 +14,7 @@ void setup() {
   pinMode(PC2, INPUT); // ph B
   pinMode(PC3, INPUT); // ph C
   
-  digitalWrite(EN_GATE, LOW);
-  delay(10);
+  pinMode(EN_GATE, OUTPUT);
   digitalWrite(EN_GATE, HIGH);
   delay(10);
   
