@@ -20,7 +20,7 @@ unsigned long t;
 
 void setup() {
    can_init(); // запускаем can
-   FDCAN_HandleTypeDef  hfdcan1 = get_hfdcan(); // создаем переменную типа FDCAN_HandleTypeDef
+   FDCAN_HandleTypeDef  hfdcan1 = *(get_hfdcan()); // создаем переменную типа FDCAN_HandleTypeDef
 }
 
 

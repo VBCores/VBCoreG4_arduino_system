@@ -13,8 +13,8 @@ static FDCAN_HandleTypeDef  hfdcan1;
 
 
 
-FDCAN_HandleTypeDef get_hfdcan(){
-  return hfdcan1;
+FDCAN_HandleTypeDef* get_hfdcan(){
+  return &hfdcan1;
 }
   
 void CANFD_Start( void );
