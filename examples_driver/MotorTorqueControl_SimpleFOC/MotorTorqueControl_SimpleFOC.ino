@@ -50,7 +50,7 @@ Serial.begin(115200);
 
   
   // set torque mode:
-  motor.torque_controller = TorqueControlType::voltage; 
+  motor.torque_controller = TorqueControlType::foc_current; 
   // set motion control loop to be used
   motor.controller = MotionControlType::torque;
 
