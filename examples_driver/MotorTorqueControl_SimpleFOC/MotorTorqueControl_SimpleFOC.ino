@@ -10,24 +10,21 @@ SPIClass SPI_3(PC12, PC11, PC10);
 //  angle_register  - (optional) angle read register - default 0x3FFF
 MagneticSensorSPI sensor = MagneticSensorSPI(PA15, 14, 0x3FFF);
 
-float shunt_resistor = 0.045; //Om
+float sensitivity = 45.0; // mV/A 
 
 // InlineCurrentSensor constructor
-//  - shunt_resistor  - shunt resistor value
-//  - gain  - current-sense op-amp gain
+//  - mVpA  - mV per Amp ratio
 //  - phA   - A phase adc pin
 //  - phB   - B phase adc pin
 //  - phC   - C phase adc pin (optional)
-//                                                                  gain phA  phB  phC
-InlineCurrentSense current_sense = InlineCurrentSense(shunt_resistor, 1, PC1, PC2, PC3);
-//InlineCurrentSense current_sense = InlineCurrentSense(45.0, PC1, PC2, PC3); - еще один способ инициализации датчика тока
+//                                                          phA  phB  phC
+InlineCurrentSense current_sense = InlineCurrentSense(45.0, PC1, PC2, PC3); 
 
 BLDCMotor motor = BLDCMotor(11); //11 -пар полюсов
 
-//  BLDCDriver3PWM( int phA, int phB, int phC, int enA, int enB, int enC )
+//  BLDCDriver3PWM( int phA, int phB, int phC)
 //  - phA, phB, phC - A,B,C phase pwm pins
-//  - enA, enB, enC - enable pin for each phase (optional)
-BLDCDriver3PWM driver = BLDCDriver3PWM(PA10, PA9, PA8, PB15, PB14, PB13);
+BLDCDriver3PWM driver = BLDCDriver3PWM(PA10, PA9, PA8);
 
 
 
@@ -41,12 +38,21 @@ Serial.begin(115200);
 
   pinMode(PB5, INPUT);
   pinMode(EN_GATE, OUTPUT);
+  
+
+  pinMode(PB15, OUTPUT);
+  pinMode(PB14, OUTPUT);
+  pinMode(PB13, OUTPUT);
+  digitalWrite(PB15, HIGH);
+  digitalWrite(PB14, HIGH);
+  digitalWrite(PB13, HIGH);
+  
   digitalWrite(EN_GATE, HIGH);
   delay(10);
-
   // driver config
-  driver.voltage_power_supply = 15;
+  driver.voltage_power_supply = 12;
   driver.init();
+  driver.enable();
 
   
   // set torque mode:
@@ -93,5 +99,5 @@ void loop() {
 
   // user communication
   command.run();
-  delayMicroseconds(10-micros()+t);
+  delayMicroseconds(100-micros()+t);
 }

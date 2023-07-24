@@ -1,5 +1,5 @@
 #include <VBCoreG4_arduino_system.h>
-#include <stm32g4xx_hal_fdcan.h>
+
 
 //для работы с CAN FD подключите дополнительный заголовочный файл stm32g4xx_hal_fdcan.h
 //в VBCoreG4_arduino_system.h пин PA5 определен как LED2 
@@ -17,10 +17,12 @@
 
 uint8_t data[4] = {222, 173, 190, 239}; //DE AD BE EF
 unsigned long t;
-
+FDCAN_HandleTypeDef  hfdcan1;
+CanFD canfd;
 void setup() {
-   can_init(); // запускаем can
-   FDCAN_HandleTypeDef  hfdcan1 = *(get_hfdcan()); // создаем переменную типа FDCAN_HandleTypeDef
+   Serial.begin(115200);
+   canfd.can_init(); // запускаем can
+   hfdcan1 = *(canfd.get_hfdcan()); // создаем переменную типа FDCAN_HandleTypeDef
 }
 
 
@@ -29,7 +31,7 @@ void loop() {
   //------Отправка сообщения в can------
   
     if (HAL_FDCAN_GetTxFifoFreeLevel(&hfdcan1) != 0){
-       FDCAN_TxHeaderTypeDef TxHeader = create_header(100); //создаем хидер исходящего сообщения, 100 - ID сообщения, в hex 0х64
+       FDCAN_TxHeaderTypeDef TxHeader = canfd.create_header(100); //создаем хидер исходящего сообщения, 100 - ID сообщения, в hex 0х64
        TxHeader.DataLength = FDCAN_DLC_BYTES_4; //количество байт в сообщении - 4
       if (HAL_FDCAN_AddMessageToTxFifoQ(&hfdcan1, &TxHeader, data) != HAL_OK){ Error_Handler(); } 
       else{digitalWrite(LED2, !digitalRead(LED2));} //помигаем светодиодом, если все ок

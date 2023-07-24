@@ -1,28 +1,22 @@
-#ifndef VBCoreG4_arduino_system_h
-#define VBCoreG4_arduino_system_h
-#include <stm32g4xx_hal_fdcan.h>
-
-#define LED1 PD2
-#define LED2 PA5
-#define USR_BTN PC13
-#define pinSDA PB_7_ALT1
-#define pinSCL PC6 
+#include "VBCoreG4_arduino_system.h"
 
 
-static FDCAN_HandleTypeDef  hfdcan1;
+CanFD::CanFD(): hfdcan1(*(new FDCAN_HandleTypeDef))
+{
+}
 
+CanFD::~CanFD()
+{
+}
 
-
-FDCAN_HandleTypeDef* get_hfdcan(){
+FDCAN_HandleTypeDef* CanFD::get_hfdcan(){
   return &hfdcan1;
 }
-  
-void CANFD_Start( void );
-static void MX_FDCAN1_Init(void);
-void can_init() {
+
+void CanFD::can_init() {
   pinMode(PD2, OUTPUT);
   pinMode(PA5, OUTPUT);
-  Serial.begin(115200);
+  
   
   GPIO_InitTypeDef GPIO_InitStruct = {0};
 
@@ -30,8 +24,8 @@ void can_init() {
 
   __HAL_RCC_GPIOB_CLK_ENABLE();
   /**FDCAN1 GPIO Configuration
-  PB8-BOOT0     ------> FDCAN1_RX
-  PB9     ------> FDCAN1_TX
+  PB8-BOOT0     -----. FDCAN1_RX
+  PB9     -----. FDCAN1_TX
   */
   GPIO_InitStruct.Pin = GPIO_PIN_8|GPIO_PIN_9;
   GPIO_InitStruct.Mode = GPIO_MODE_AF_PP;
@@ -40,12 +34,12 @@ void can_init() {
   GPIO_InitStruct.Alternate = GPIO_AF9_FDCAN1;
   HAL_GPIO_Init(GPIOB, &GPIO_InitStruct);
 
+
   MX_FDCAN1_Init();
   CANFD_Start();
 }
 
-
-void CANFD_Start( void )
+void CanFD::CANFD_Start()
 {
   // Accepts all frames
   FDCAN_FilterTypeDef sFilterConfig;  
@@ -74,8 +68,7 @@ void CANFD_Start( void )
   Serial.println("Started FDCAN");
 }
 
-
-static void MX_FDCAN1_Init(void)
+void CanFD::MX_FDCAN1_Init(void)
 {
 
   /* USER CODE BEGIN FDCAN1_Init 0 */
@@ -110,7 +103,7 @@ static void MX_FDCAN1_Init(void)
 
 }
 
-FDCAN_TxHeaderTypeDef create_header(uint32_t ID){
+FDCAN_TxHeaderTypeDef CanFD::create_header(uint32_t ID){
   FDCAN_TxHeaderTypeDef TxHeader;    
   TxHeader.Identifier = ID; // ID сообщения
   TxHeader.IdType = FDCAN_EXTENDED_ID;
@@ -124,7 +117,7 @@ FDCAN_TxHeaderTypeDef create_header(uint32_t ID){
  return TxHeader; 
  }
 
-extern "C" void SystemClock_Config(void)
+ void SystemClock_Config(void)
 {
 	RCC_OscInitTypeDef RCC_OscInitStruct = { 0 };
 	RCC_ClkInitTypeDef RCC_ClkInitStruct = { 0 };
@@ -166,5 +159,3 @@ extern "C" void SystemClock_Config(void)
 	PeriphClkInit.Adc12ClockSelection = RCC_ADC12CLKSOURCE_SYSCLK;
 	if (HAL_RCCEx_PeriphCLKConfig(&PeriphClkInit) != HAL_OK) { Error_Handler(); }
 }
-
-#endif

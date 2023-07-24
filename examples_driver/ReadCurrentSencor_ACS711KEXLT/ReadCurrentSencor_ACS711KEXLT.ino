@@ -1,7 +1,7 @@
 #include <VBCoreG4_arduino_system.h>
 
 #define EN_GATE PB3
-float shunt_resistor = 0.045; //Om
+float sensitivity = 45; // mV/A
 
 float i_A_offset =0;
 float i_B_offset = 0;
@@ -33,10 +33,9 @@ i_C_offset /= 64.0f;
 
 float i_A, i_B, i_C;
 void loop() {
-  //I = U/R
-  i_A = (3.3f*(float)analogRead(PC1)/4096.0f - i_A_offset )/shunt_resistor; //A
-  i_B = (3.3f*(float)analogRead(PC2)/4096.0f- i_B_offset )/shunt_resistor; //A
-  i_C = (3.3f*(float)analogRead(PC3)/4096.0f- i_C_offset )/shunt_resistor; //A
+  i_A = (3.3f*(float)analogRead(PC1)/4096.0f - i_A_offset )/(sensitivity/1000); //A
+  i_B = (3.3f*(float)analogRead(PC2)/4096.0f- i_B_offset )/(sensitivity/1000); //A
+  i_C = (3.3f*(float)analogRead(PC3)/4096.0f- i_C_offset )/(sensitivity/1000); //A
 
    Serial.print(" A: ");
    Serial.print(i_A);
