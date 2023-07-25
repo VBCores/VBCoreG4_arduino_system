@@ -1,7 +1,6 @@
 #include <VBCoreG4_arduino_system.h>
 
 
-//для работы с CAN FD подключите дополнительный заголовочный файл stm32g4xx_hal_fdcan.h
 //в VBCoreG4_arduino_system.h пин PA5 определен как LED2 
 
 //запустить can c распберри - sudo ip link set can0 up txqueuelen 65535 type can bitrate 1000000 dbitrate 8000000 fd on
@@ -9,7 +8,7 @@
 //прочитать все сообщения в can -  candump can0
 //прочитать сообщение can по его ID -  candump can0,ID:7ff
 
-//в libraries добавить библиотеку VBCoreG4_arduino_system.h
+//в libraries добавить библиотеку VBCoreG4_arduino_system
 //функция can_init() запускает can
 //функция get_hfdcan() возвращает переменную типа FDCAN_HandleTypeDef, без которой невозможно взаимодействие с can
 //функция create_header(uint8_t ID) создает хидер для отправки сообщения, в нее нужно передать переменную типа uint8_t - ID сообщения
@@ -17,12 +16,12 @@
 
 uint8_t data[4] = {222, 173, 190, 239}; //DE AD BE EF
 unsigned long t;
-FDCAN_HandleTypeDef  hfdcan1;
+FDCAN_HandleTypeDef  hfdcan1; // создаем переменную типа FDCAN_HandleTypeDef
 CanFD canfd;
 void setup() {
    Serial.begin(115200);
    canfd.can_init(); // запускаем can
-   hfdcan1 = *(canfd.get_hfdcan()); // создаем переменную типа FDCAN_HandleTypeDef
+   hfdcan1 = *(canfd.get_hfdcan()); 
 }
 
 
