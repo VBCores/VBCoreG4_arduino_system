@@ -16,12 +16,12 @@
 
 uint8_t data[4] = {222, 173, 190, 239}; //DE AD BE EF
 unsigned long t;
-FDCAN_HandleTypeDef  hfdcan1; // создаем переменную типа FDCAN_HandleTypeDef
+FDCAN_HandleTypeDef*  hfdcan1; // создаем переменную типа FDCAN_HandleTypeDef
 CanFD canfd;
 void setup() {
    Serial.begin(115200);
    canfd.can_init(); // запускаем can
-   hfdcan1 = *(canfd.get_hfdcan()); 
+   hfdcan1 = canfd.get_hfdcan(); 
 }
 
 
@@ -29,20 +29,20 @@ void loop() {
     t = micros(); //время в микросекундах
   //------Отправка сообщения в can------
   
-    if (HAL_FDCAN_GetTxFifoFreeLevel(&hfdcan1) != 0){
+    if (HAL_FDCAN_GetTxFifoFreeLevel(hfdcan1) != 0){
        FDCAN_TxHeaderTypeDef TxHeader = canfd.create_header(100); //создаем хидер исходящего сообщения, 100 - ID сообщения, в hex 0х64
        TxHeader.DataLength = FDCAN_DLC_BYTES_4; //количество байт в сообщении - 4
-      if (HAL_FDCAN_AddMessageToTxFifoQ(&hfdcan1, &TxHeader, data) != HAL_OK){ Error_Handler(); } 
+      if (HAL_FDCAN_AddMessageToTxFifoQ(hfdcan1, &TxHeader, data) != HAL_OK){ Error_Handler(); } 
       else{digitalWrite(LED2, !digitalRead(LED2));} //помигаем светодиодом, если все ок
     }
 
 // -------Получение сообщений из can-------
 
-while(HAL_FDCAN_GetRxFifoFillLevel(&hfdcan1, FDCAN_RX_FIFO0) > 0 )
+while(HAL_FDCAN_GetRxFifoFillLevel(hfdcan1, FDCAN_RX_FIFO0) > 0 )
   {
     FDCAN_RxHeaderTypeDef Header;  // хидер для входящего сообщения
     uint8_t RxData[64]; // максимальная длина сообщения - 64 байта 
-    if (HAL_FDCAN_GetRxMessage(&hfdcan1, FDCAN_RX_FIFO0, &Header, RxData) != HAL_OK){ Error_Handler(); }  
+    if (HAL_FDCAN_GetRxMessage(hfdcan1, FDCAN_RX_FIFO0, &Header, RxData) != HAL_OK){ Error_Handler(); }  
     else{ // напечатаем первые 4 байта входящего сообщения, если все ок. Пример отправки сообщения cansend can0 00000123#DEADBEEF 
     Serial.print("ID ");
     Serial.print(Header.Identifier); // ID сообщения 
