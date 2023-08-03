@@ -18,7 +18,7 @@ CyphalInterface* interface;
 void error_handler() {Serial.println("error"); while (1) {};}
 uint64_t micros_64() {return micros();}
 
-// Макрос, объявляющий класс HBeatReader, обрабатывающий ПОЛУЧЕНИЕ uavcan_node_Heartbeat_1_0
+// Макрос, объявляющий класс VoltageReader, обрабатывающий ПОЛУЧЕНИЕ uavcan_si_unit_voltage_Scalar_1_0
 SUBSCRIPTION_CLASS_MESSAGE(VoltageReader, uavcan_si_unit_voltage_Scalar_1_0, 1111)
 // Если все же пользоваться макросами (что я рекомендую), то остается только реализовать функцию-обработчик получения сообщений:
 // Сигнатура у них всегда (const ТИП_СООБЩЕНИЯ&, CanardRxTransfer*). Обратите внимание, что первое это константная ссылка, а второе указатель
