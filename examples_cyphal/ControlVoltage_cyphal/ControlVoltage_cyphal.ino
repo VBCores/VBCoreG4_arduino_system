@@ -105,7 +105,7 @@ void setup() {
 
   motor.current_limit = 1.94;
   motor.voltage_limit = 24;
-  motor.velocity_limit = 336;
+  motor.velocity_limit = 5.5;
   // initialize motor
   motor.init();
   // align encoder and start FOC

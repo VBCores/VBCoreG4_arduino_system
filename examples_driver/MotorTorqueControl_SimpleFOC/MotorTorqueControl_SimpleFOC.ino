@@ -75,7 +75,7 @@ Serial.begin(115200);
 
   motor.current_limit = 1.94;
   motor.voltage_limit = 24;
-  motor.velocity_limit = 336;
+  motor.velocity_limit = 5.5;
   motor.KV_rating = 14;
   // initialize motor
   motor.init();
