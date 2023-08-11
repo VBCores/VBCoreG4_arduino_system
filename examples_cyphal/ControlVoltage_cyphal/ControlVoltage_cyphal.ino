@@ -84,7 +84,8 @@ void setup() {
   driver.init();
   driver.enable();
 
-  
+  motor.foc_modulation = FOCModulationType::SpaceVectorPWM;
+  motor.KV_rating = 14;
   // set torque mode:
   motor.torque_controller = TorqueControlType::voltage; 
   // set motion control loop to be used

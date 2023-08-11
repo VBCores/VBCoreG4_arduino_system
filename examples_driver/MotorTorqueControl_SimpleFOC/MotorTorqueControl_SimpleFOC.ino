@@ -50,13 +50,14 @@ Serial.begin(115200);
   digitalWrite(EN_GATE, HIGH);
   delay(10);
   // driver config
-  driver.voltage_power_supply = 12;
+  driver.voltage_power_supply = 15;
   driver.init();
   driver.enable();
 
+  motor.foc_modulation = FOCModulationType::SpaceVectorPWM;
   
   // set torque mode:
-  motor.torque_controller = TorqueControlType::foc_current; 
+  motor.torque_controller = TorqueControlType::voltage; 
   // set motion control loop to be used
   motor.controller = MotionControlType::torque;
 
@@ -75,6 +76,7 @@ Serial.begin(115200);
   motor.current_limit = 1.94;
   motor.voltage_limit = 24;
   motor.velocity_limit = 336;
+  motor.KV_rating = 14;
   // initialize motor
   motor.init();
   // align encoder and start FOC
