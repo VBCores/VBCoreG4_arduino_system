@@ -34,7 +34,6 @@ void CanFD::default_start() {
 }
 
 void CanFD::write_default_params() {
-  // Do not touch
   hfdcan1.Instance = FDCAN1;
   hfdcan1.Init.FrameFormat = FDCAN_FRAME_FD_BRS;
   hfdcan1.Init.Mode = FDCAN_MODE_NORMAL;
@@ -42,7 +41,7 @@ void CanFD::write_default_params() {
   hfdcan1.Init.TransmitPause = ENABLE;
   hfdcan1.Init.ProtocolException = DISABLE;
   hfdcan1.Init.TxFifoQueueMode = FDCAN_TX_FIFO_OPERATION;
-  // Maybe touch
+
   hfdcan1.Init.ClockDivider = FDCAN_CLOCK_DIV1;
   hfdcan1.Init.NominalPrescaler = 4;
   hfdcan1.Init.NominalSyncJumpWidth = 10;
@@ -54,6 +53,27 @@ void CanFD::write_default_params() {
   hfdcan1.Init.DataTimeSeg2 = 3;
   hfdcan1.Init.StdFiltersNbr = 0;
   hfdcan1.Init.ExtFiltersNbr = 3;
+}
+
+void CanFD::write_default_params_classic() {
+  hfdcan1.Instance = FDCAN1;
+  hfdcan1.Init.ClockDivider = FDCAN_CLOCK_DIV1;
+  hfdcan1.Init.FrameFormat = FDCAN_FRAME_CLASSIC;
+  hfdcan1.Init.Mode = FDCAN_MODE_NORMAL;
+  hfdcan1.Init.AutoRetransmission = ENABLE;
+  hfdcan1.Init.TransmitPause = ENABLE;
+  hfdcan1.Init.ProtocolException = DISABLE;
+  hfdcan1.Init.NominalPrescaler = 4;
+  hfdcan1.Init.NominalSyncJumpWidth = 10;
+  hfdcan1.Init.NominalTimeSeg1 = 29;
+  hfdcan1.Init.NominalTimeSeg2 = 10;
+  hfdcan1.Init.DataPrescaler = 4;
+  hfdcan1.Init.DataSyncJumpWidth = 10;
+  hfdcan1.Init.DataTimeSeg1 = 29;
+  hfdcan1.Init.DataTimeSeg2 = 10;
+  hfdcan1.Init.StdFiltersNbr = 1;
+  hfdcan1.Init.ExtFiltersNbr = 0;
+  hfdcan1.Init.TxFifoQueueMode = FDCAN_TX_FIFO_OPERATION;
 }
 
 void CanFD::apply_config() {
