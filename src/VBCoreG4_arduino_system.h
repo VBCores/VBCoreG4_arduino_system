@@ -13,21 +13,22 @@
 #define pinSDA PB_7_ALT1
 #define pinSCL PC6 
 
-
-
 class CanFD
 { 
 public:
-  CanFD();
-  void can_init();
-  FDCAN_HandleTypeDef*  get_hfdcan();
-  FDCAN_TxHeaderTypeDef create_header(uint32_t ID);
-  ~CanFD();
-private:
-  FDCAN_HandleTypeDef  hfdcan1;
-  void MX_FDCAN1_Init(void);
-  void CANFD_Start( void );
+  CanFD(): hfdcan1() {};
+  FDCAN_HandleTypeDef* get_hfdcan() {
+    return &hfdcan1;
+  }
 
+  void init();
+  void write_default_params();
+  void write_default_params_classic();
+  void default_start();
+  void apply_config();
+
+private:
+  FDCAN_HandleTypeDef hfdcan1;
 };
 
 void SystemClock_Config(void);
