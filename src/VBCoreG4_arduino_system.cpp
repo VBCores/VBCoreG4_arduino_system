@@ -27,7 +27,7 @@ void CanFD::default_start() {
   sFilterConfig.FilterID1 = 0x0;
   sFilterConfig.FilterID2 = 0x1FFFFFFF;
   if (HAL_FDCAN_ConfigFilter(&hfdcan1, &sFilterConfig) != HAL_OK){ Error_Handler(); }  
-  if (HAL_FDCAN_ConfigGlobalFilter(&hfdcan1, FDCAN_REJECT, FDCAN_REJECT, FDCAN_FILTER_REMOTE, FDCAN_FILTER_REMOTE) != HAL_OK){ Error_Handler(); }
+  if (HAL_FDCAN_ConfigGlobalFilter(&hfdcan1, FDCAN_ACCEPT_IN_RX_FIFO0, FDCAN_ACCEPT_IN_RX_FIFO0, FDCAN_FILTER_REMOTE, FDCAN_FILTER_REMOTE) != HAL_OK){ Error_Handler(); }
   if (HAL_FDCAN_ConfigTxDelayCompensation(&hfdcan1, 5, 0) != HAL_OK){ Error_Handler(); }
   if (HAL_FDCAN_EnableTxDelayCompensation(&hfdcan1) != HAL_OK){ Error_Handler(); }
   if (HAL_FDCAN_Start(&hfdcan1) != HAL_OK){ Error_Handler(); }
@@ -52,7 +52,7 @@ void CanFD::write_default_params() {
   hfdcan1.Init.DataTimeSeg1 = 6;
   hfdcan1.Init.DataTimeSeg2 = 3;
   hfdcan1.Init.StdFiltersNbr = 0;
-  hfdcan1.Init.ExtFiltersNbr = 3;
+  hfdcan1.Init.ExtFiltersNbr = 1;
 }
 
 void CanFD::write_default_params_classic() {
@@ -64,15 +64,15 @@ void CanFD::write_default_params_classic() {
   hfdcan1.Init.TransmitPause = ENABLE;
   hfdcan1.Init.ProtocolException = DISABLE;
   hfdcan1.Init.NominalPrescaler = 4;
-  hfdcan1.Init.NominalSyncJumpWidth = 10;
+  hfdcan1.Init.NominalSyncJumpWidth = 75;
   hfdcan1.Init.NominalTimeSeg1 = 29;
   hfdcan1.Init.NominalTimeSeg2 = 10;
   hfdcan1.Init.DataPrescaler = 4;
-  hfdcan1.Init.DataSyncJumpWidth = 10;
+  hfdcan1.Init.DataSyncJumpWidth = 75;
   hfdcan1.Init.DataTimeSeg1 = 29;
   hfdcan1.Init.DataTimeSeg2 = 10;
-  hfdcan1.Init.StdFiltersNbr = 1;
-  hfdcan1.Init.ExtFiltersNbr = 0;
+  hfdcan1.Init.StdFiltersNbr = 0;
+  hfdcan1.Init.ExtFiltersNbr = 1;
   hfdcan1.Init.TxFifoQueueMode = FDCAN_TX_FIFO_OPERATION;
 }
 
