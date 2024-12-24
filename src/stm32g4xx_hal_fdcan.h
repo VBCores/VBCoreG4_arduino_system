@@ -20,6 +20,9 @@
 #ifndef STM32G4xx_HAL_FDCAN_H
 #define STM32G4xx_HAL_FDCAN_H
 
+#define FDCAN1 ((FDCAN_GlobalTypeDef *) FDCAN1_BASE)
+#define HAL_FDCAN_MODULE_ENABLED
+
 #ifdef __cplusplus
 extern "C" {
 #endif
