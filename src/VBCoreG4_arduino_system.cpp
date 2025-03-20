@@ -54,7 +54,7 @@ void CanFD::write_default_params() {
   hfdcan1.Init.TxFifoQueueMode = FDCAN_TX_FIFO_OPERATION;
   
 }
-void CanFD:: write_500kb_params(){
+void CanFD::write_500kb_params(){
   hfdcan1.Instance = FDCAN1;
   hfdcan1.Init.FrameFormat = FDCAN_FRAME_FD_BRS;
   hfdcan1.Init.Mode = FDCAN_MODE_NORMAL;
