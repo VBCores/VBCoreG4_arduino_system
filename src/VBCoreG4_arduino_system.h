@@ -23,6 +23,7 @@ public:
 
   void init();
   void write_default_params();
+  void write_500kb_params();
   void write_default_params_classic();
   void default_start();
   void apply_config();
